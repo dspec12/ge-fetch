@@ -36,6 +36,12 @@ func (r release) download(program string) {
 		}
 	}
 
+	// Confirm
+	fmt.Printf("%s will be installed to '%s'\n", r.TagName, fmt.Sprintf("%s/%s/", getHomeDirectory(), program))
+	if !userConfirm("Do you want to proceed? [y/N]") {
+		return
+	}
+
 	// Download asset tarball
 	resp, err := http.Get(url)
 	if err != nil {

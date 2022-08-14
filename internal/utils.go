@@ -4,11 +4,13 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/mitchellh/go-homedir"
 )
@@ -81,4 +83,19 @@ func extract(src, dst string) {
 		log.Fatal(err)
 	}
 
+}
+
+func userConfirm(msg string) bool {
+	var input string
+
+	fmt.Println(msg)
+
+	// Taking input from user
+	fmt.Scanln(&input)
+	if strings.ToLower(input) == "yes" || input == "y" {
+		return true
+	}
+
+	fmt.Println("aborting..")
+	return false
 }
