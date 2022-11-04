@@ -82,7 +82,6 @@ func extract(src, dst string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
 
 func userConfirm(msg string) bool {
