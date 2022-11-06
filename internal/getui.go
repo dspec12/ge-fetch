@@ -76,5 +76,4 @@ func fetch(geType string) {
 	}
 
 	r[i].download(installDir)
-
 }
