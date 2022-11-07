@@ -24,7 +24,7 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		internal.GETUI()
 	},
-	Version: "0.0.1",
+	Version: "0.0.2",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
