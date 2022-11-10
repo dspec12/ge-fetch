@@ -1,6 +1,3 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -24,7 +21,8 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		internal.GETUI()
 	},
-	Version: "0.0.2",
+	CompletionOptions: cobra.CompletionOptions{DisableDefaultCmd: true},
+	Version:           "0.0.2",
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

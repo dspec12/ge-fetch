@@ -1,11 +1,7 @@
-/*
-Copyright © 2022 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/dspec12/getui/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -29,27 +25,20 @@ Example:
 		yesFlag, err := cmd.Flags().GetBool("yes")
 		cobra.CheckErr(err)
 
-		infoFlag, err := cmd.Flags().GetBool("yes")
+		infoFlag, err := cmd.Flags().GetBool("info")
 		cobra.CheckErr(err)
 
 		if protonFlag {
-			fmt.Println("proton")
+			latestProton(infoFlag, yesFlag)
 		}
 
 		if wineFlag {
-			fmt.Println("wine")
+			latestWine(infoFlag, yesFlag)
 		}
 
-		// if yesFlag {
-		// 	fmt.Println("yes")
-		// }
-
-		// if infoFlag {
-		// 	fmt.Println("info")
-		// }
-
 		if !protonFlag && !wineFlag {
-			fmt.Println("proton and wine")
+			latestProton(infoFlag, yesFlag)
+			latestWine(infoFlag, yesFlag)
 		}
 	},
 }
@@ -60,4 +49,29 @@ func init() {
 	latestCmd.Flags().BoolP("wine", "w", false, "Installs GE-Wine")
 	latestCmd.Flags().BoolP("yes", "y", false, "Skips user confirmation")
 	latestCmd.Flags().BoolP("info", "i", false, "Displays info only")
+	latestCmd.MarkFlagsMutuallyExclusive("yes", "info")
+}
+
+func latestProton(infoFlag, yesFlag bool) {
+	protonReleases := internal.GetReleases(internal.UrlProtonGECustom)
+	protonReleases[0].DisplayInfo()
+	if !infoFlag {
+		if yesFlag {
+			protonReleases[0].Download(internal.ProtonInstallDir, false)
+		} else {
+			protonReleases[0].Download(internal.ProtonInstallDir, true)
+		}
+	}
+}
+
+func latestWine(infoFlag, yesFlag bool) {
+	wineReleases := internal.GetReleases(internal.UrlWineGECustom)
+	wineReleases[0].DisplayInfo()
+	if !infoFlag {
+		if yesFlag {
+			wineReleases[0].Download(internal.WineInstallDir, false)
+		} else {
+			wineReleases[0].Download(internal.WineInstallDir, true)
+		}
+	}
 }

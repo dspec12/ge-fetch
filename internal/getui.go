@@ -7,10 +7,10 @@ import (
 )
 
 const (
-	urlWineGECustom   = "https://api.github.com/repos/GloriousEggroll/wine-ge-custom/releases"
-	urlProtonGECustom = "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases"
-	wineInstallDir    = ".local/share/lutris/runners/wine"
-	protonInstallDir  = ".steam/root/compatibilitytools.d"
+	UrlWineGECustom   = "https://api.github.com/repos/GloriousEggroll/wine-ge-custom/releases"
+	UrlProtonGECustom = "https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases"
+	WineInstallDir    = ".local/share/lutris/runners/wine"
+	ProtonInstallDir  = ".steam/root/compatibilitytools.d"
 )
 
 func GETUI() {
@@ -44,11 +44,11 @@ func fetch(geType string) {
 
 	switch geType {
 	case "Wine-GE":
-		r = getReleases(urlWineGECustom)
-		installDir = wineInstallDir
+		r = GetReleases(UrlWineGECustom)
+		installDir = WineInstallDir
 	case "Proton-GE":
-		r = getReleases(urlProtonGECustom)
-		installDir = protonInstallDir
+		r = GetReleases(UrlProtonGECustom)
+		installDir = ProtonInstallDir
 	}
 
 	templates := &promptui.SelectTemplates{
@@ -75,5 +75,5 @@ func fetch(geType string) {
 		return
 	}
 
-	r[i].download(installDir)
+	r[i].Download(installDir, true)
 }

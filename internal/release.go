@@ -7,7 +7,9 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"text/template"
 
+	"github.com/manifoldco/promptui"
 	"github.com/schollz/progressbar/v3"
 )
 
@@ -26,7 +28,7 @@ type asset struct {
 }
 
 // Download Asset
-func (r release) download(program string) {
+func (r release) Download(program string, confirm bool) {
 	// Set asset URL and name vars
 	var url, filePath string
 	for _, a := range r.Assets {
@@ -37,9 +39,11 @@ func (r release) download(program string) {
 	}
 
 	// Confirm
-	fmt.Printf("%s will be installed to '%s'\n", r.TagName, fmt.Sprintf("%s/%s/", getHomeDirectory(), program))
-	if !userConfirm("Do you want to proceed? [y/N]") {
-		return
+	if confirm {
+		fmt.Printf("%s will be installed to '%s'\n", r.TagName, fmt.Sprintf("%s/%s/", getHomeDirectory(), program))
+		if !userConfirm("Do you want to proceed? [y/N]") {
+			return
+		}
 	}
 
 	// Download asset tarball
@@ -96,4 +100,20 @@ func (r release) getChecksum() string {
 		}
 	}
 	return ""
+}
+
+func (r release) DisplayInfo() {
+	tpl, err := template.New("tpl").Funcs(promptui.FuncMap).Parse(`
+{{ "Name:" | faint }}	{{ .Name }}
+{{ "Published:" | faint }}	{{ .Published }}
+{{ "Release Page:" | faint }}	{{ .HTMLURL }}
+`)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	err = tpl.Execute(os.Stdout, r)
+	if err != nil {
+		log.Fatalln(err)
+	}
 }

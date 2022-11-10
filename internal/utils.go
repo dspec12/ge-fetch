@@ -16,7 +16,7 @@ import (
 )
 
 // Unmarhsll JSON into a slice of release types
-func getReleases(url string) []release {
+func GetReleases(url string) []release {
 	bs := fetchReleaseData(url)
 	var releases []release
 	err := json.Unmarshal(bs, &releases)
